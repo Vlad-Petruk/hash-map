@@ -1,28 +1,17 @@
 import { LinkedList } from "./linked-list.mjs";
 
-
-
 function hashMap () {
     let buckets = new Array(16).fill(null);
     let capacity = buckets.length;
     let loadFactor = 0.75;
 
-    function calculateLoadFactor () {
-        const occupied = lengthArr();
-        let currentLoad = occupied/capacity;
-        return currentLoad
-    }
-
-    function lengthArr() {
-        return buckets.filter(e => e != null).length;
-    }
 
     function hash(key) {
         let hashCode = 0;
     
         const primeNumber = 31;
         for (let i = 0; i < key.length; i++) {
-            hashCode = (primeNumber * hashCode + key.charCodeAt(i))%16;
+            hashCode = (primeNumber * hashCode + key.charCodeAt(i))%buckets.length;
         }
 
         return hashCode;
@@ -42,8 +31,10 @@ function hashMap () {
 		bucketList.append(key, value);
 
         let currentLoad = calculateLoadFactor();
+    
         if(currentLoad > loadFactor) {
-            buckets = [...buckets, new Array(capacity).fill(null)];
+            buckets = [...buckets, ...new Array(capacity).fill(null)];
+            capacity = buckets.length;
         }  
     }
 
@@ -136,6 +127,16 @@ function hashMap () {
         return entriesArr;
     }
 
+    function calculateLoadFactor () {
+        const occupied = lengthArr();
+        let currentLoad = occupied/capacity;
+        return currentLoad
+    }
+
+    function lengthArr() {
+        return buckets.filter(e => e != null).length;
+    }
+
     return {
         hash,
         set,
@@ -152,10 +153,6 @@ function hashMap () {
     }
 
 }
-
-// if (index < 0 || index >= buckets.length) {
-//     throw new Error("Trying to access index out of bound");
-// }
 
 const newMap = hashMap();
 const hash = newMap.set('Vlad','Petruk');
@@ -183,7 +180,12 @@ const hashsww = newMap.set('Viswadwwhdsdshskaq','Petruk');
 const hashsqw = newMap.set('Viwkaawsfdsasfar','Petruk');
 const hashswz = newMap.set('Vwidawwksdssd','Petruk');
 const hashfwb = newMap.set('Vikawsdssdd','Petruk');
+const sdsdg = newMap.set('assgas','asafs')
+const hadshsww = newMap.set('Vi','Petruk');
+const haddshsqw = newMap.set('Viwka','Petruk');
+const hashfgswz = newMap.set('Vwaws','Petruk');
+const hashfwffb = newMap.set('V','Petruk');
 const hash3 = newMap.calculateLoadFactor();
 // console.log(hash);
 console.log(hash3)
-console.log(hashfwb)
+console.log(newMap.lengthArr())
