@@ -1,5 +1,6 @@
 class Node {
-    constructor(value = null, nextNode = null) {
+    constructor(key = null, value = null, nextNode = null) {
+        this.key = key;
         this.value = value;
         this.nextNode = nextNode;
     }
@@ -8,12 +9,14 @@ class Node {
 class LinkedList {
     constructor() {
         this.head = null;
+        this.size = 0;
     }
 
-    append(value) {
-        const newNode = new Node(value);
+    append(key, value) {
+        const newNode = new Node(key, value);
 
         if (!this.head) {
+            this.size++
             this.head = newNode;
             return;
         }
@@ -24,6 +27,7 @@ class LinkedList {
         }
 
         current.nextNode = newNode;
+        this.size++;
     }
 
     prepend(value) {
@@ -47,61 +51,11 @@ class LinkedList {
         return this.head;
     }
 
-    tail() {
-        if (!this.head) {
-            return null;
-        }
 
-        let current = this.head;
-        while (current.nextNode !== null) {
-            current = current.nextNode;
-        }
-
-        return current;
-    }
-
-    at(index) {
-        if (index < 0){
-            return null;
-        } 
-        let count = 0;
-        let current = this.head;
-
-        while (current) {
-            if (count === index) {
-                return current;
-            }
-
-            count++;
-            current = current.nextNode;
-        }
-
-        return null;
-
-        
-    }
-
-    pop(){
-        if (!this.head) {
-            return null;
-        }
-
-        let current = this.head;
-        let previous = null;
-
-        while (current.nextNode) {
-            previous = current;
-            current = current.nextNode;
-        }
-
-        previous.nextNode = null;
-        return current;
-    }
-
-    contains(value) {
+    contains(key) {
         let current = this.head;
         while (current) {
-            if(current.value.value === value){
+            if(current.key === key){
                 return true
             } 
             current = current.nextNode;
@@ -111,12 +65,12 @@ class LinkedList {
 
     }
 
-    find(value) {
+    find(key) {
         let current = this.head;
         let index = 0;
         while (current) {
-            if(current.value.value === value){
-                return index;
+            if(current.key === key){
+                return current.key;
             } 
 
             index++
@@ -125,18 +79,23 @@ class LinkedList {
         return null;
     }
 
-    toString() {
-        let result = '';
-        let current = this.head;
-
-        while (current) {
-            result += `(${current.value.value}) -> `;
-            current = current.nextNode;
-        }
-
-        result += 'null';
-        return result;
-    }
+    removeKey(key) {
+		let current = this.head;
+		let previous;
+		let index = 0;
+		if (current.key == key && index == 0) {
+			this.size--;
+			return (this.head = current.next);
+		}
+		while (current.next !== null) {
+			previous = current;
+			current = current.next;
+			index++;
+		}
+		if (current.key != key) return;
+		this.size--;
+		return (previous.next = current.next);
+	}
 }
 
 // const firstNode = new Node(10);
